@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+// prisma/schema.prisma
+datasource db {
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+}
+
+
+model User {
+  id              String    @id @default(cuid())
+  name            String    @unique
+  email           String    @unique
+  password        String?
+  habits          Habit[]   // List is non-nullable, but Habit can be linked or not
+  villages        Village[] // List is non-nullable, but Village can be linked or not
+
+  emailVerified   DateTime?
+  image           String?
+  accounts        Account[]
+  sessions        Session[]
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Habit {
+  id         Int       @id @default(autoincrement())
+  name       String
+  streak     Int       @default(0) // Tracks the habit streak
+  user       User?     @relation(fields: [userId], references: [id]) // Optional relation to User
+  userId     String?   // Make userId optional (can be null)
+  village    Village?  @relation() // Optional relation to Village
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Village {
+  id           Int      @id @default(autoincrement())
+  name         String   // Name of the village, generated as "[habit name] Village"
+  habit        Habit?   @relation(fields: [habitId], references: [id]) // Optional relation to Habit
+  habitId      Int?     @unique
+  user         User?    @relation(fields: [userId], references: [id]) // Optional relation to User
+  userId       String?  // Make userId optional (can be null)
+  gridElements Grid[]   // Grid representing the interactive parts of the village
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Grid {
+  id        Int      @id @default(autoincrement())
+  x         Int      // X-coordinate of the grid cell
+  y         Int      // Y-coordinate of the grid cell
+  building  String?  // Type of building placed on this grid cell
+  village   Village  @relation(fields: [villageId], references: [id])
+  villageId Int
+}
