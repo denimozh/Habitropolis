@@ -1,89 +1,62 @@
-"use client"
+import { auth } from "@/lib/auth";
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import React from 'react'
+import { signIn } from "@/lib/auth";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { GoogleSignIn } from "@/components/google-sign-in";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import Link from 'next/link'
- 
-const formSchema = z.object({
-  email: z.string().min(2).max(50),
-  password: z.string().min(8).max(50)
-})
-
-const SignIn = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  })
- 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-  }
+const Page = async () => {
+  const session = await auth();
+  if (session) redirect("/dashboard");
 
   return (
-    <Card className='w-full max-w-md mx-auto'>
-        <CardHeader>
-            <CardTitle>Sign In</CardTitle>
-            <CardDescription>
-                Welcome back! Please sign in to continue.
-            </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="johndoe@gmai..com" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      This is your connected email to your account.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter your password" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      This is your password.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Submit</Button>
-            </form>
-          </Form>
-        </CardContent>
+    <div className="w-full max-w-sm mx-auto space-y-6">
+      <h1 className="text-2xl font-bold text-center mb-6">Sign In</h1>
 
-        <CardFooter className='flex justify-center'>
-          <p className='text-sm text-muted-foreground'>Don&apos;t have an account yet?{' '} 
-            <Link href={"/sign-up"} className='text-primary hover:underline'>Sign Up</Link>
-          </p>
-        </CardFooter>
-    </Card>
-  )
-}
+      <GoogleSignIn />
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="bg-background px-2 text-muted-foreground">
+            Or continue with email
+          </span>
+        </div>
+      </div>
 
-export default SignIn
+      {/* Email/Password Sign In */}
+      <form
+        className="space-y-4"
+      >
+        <Input
+          name="email"
+          placeholder="Email"
+          type="email"
+          required
+          autoComplete="email"
+        />
+        <Input
+          name="password"
+          placeholder="Password"
+          type="password"
+          required
+          autoComplete="current-password"
+        />
+        <Button className="w-full" type="submit">
+          Sign In
+        </Button>
+      </form>
+
+      <div className="text-center">
+        <Button asChild variant="link">
+          <Link href="/sign-up">Don&apos;t have an account? Sign up</Link>
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default Page;

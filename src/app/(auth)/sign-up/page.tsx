@@ -1,108 +1,68 @@
-"use client"
+import { GoogleSignIn } from "@/components/google-sign-in";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { auth } from "@/lib/auth";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import React from 'react'
-
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
- 
-
-const formSchema = z.object({
-  name: z.string().min(2).max(50),
-  email: z.string().min(2).max(50),
-  password: z.string().min(8).max(50)
-})
-
-const SignUp = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
-  })
- 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-  }
+const Page = async () => {
+  const session = await auth();
+  if (session) redirect("/dashboard");
 
   return (
-    <Card className='w-full max-w-md mx-auto'>
-        <CardHeader>
-            <CardTitle>Sign Up</CardTitle>
-            <CardDescription>
-                Create your account to get started.
-            </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Username</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John Doe" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="johndoe@gmai..com" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      This is your connected email to your account.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter your password" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      This is your password.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Submit</Button>
-            </form>
-          </Form>
-        </CardContent>
+    <div className="w-full max-w-sm mx-auto space-y-6 ">
+      <h1 className="text-2xl font-bold text-center mb-6">Create Account</h1>
 
-        <CardFooter className='flex justify-center'>
-          <p className='text-sm text-muted-foreground'>Already have an account?{' '} 
-            <Link href={"/sign-in"} className='text-primary hover:underline'>Sign In</Link>
-          </p>
-        </CardFooter>
-    </Card>
-  )
-}
+      <GoogleSignIn />
 
-export default SignUp
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="bg-background px-2 text-muted-foreground">
+            Or continue with email
+          </span>
+        </div>
+      </div>
+
+      {/* Email/Password Sign Up */}
+      <form
+        className="space-y-4"
+        action={async (formData) => {
+          "use server";
+          //const res = await signUp(formData);
+          //if (res.success) {
+          //  redirect("/sign-in");
+          //}
+        }}
+      >
+        <Input
+          name="email"
+          placeholder="Email"
+          type="email"
+          required
+          autoComplete="email"
+        />
+        <Input
+          name="password"
+          placeholder="Password"
+          type="password"
+          required
+          autoComplete="new-password"
+        />
+        <Button className="w-full" type="submit">
+          Sign Up
+        </Button>
+      </form>
+
+      <div className="text-center">
+        <Button asChild variant="link">
+          <Link href="/sign-in">Already have an account? Sign in</Link>
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default Page;
