@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from 'next/font/google';
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 const poppinsFont = Poppins({
   weight: ['300', '400', '500', '600', '700'], // Array of multiple weights
@@ -24,6 +25,7 @@ export default function RootLayout({
         className={`${poppinsFont.variable} bg-yellow-50`}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );
