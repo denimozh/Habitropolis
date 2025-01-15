@@ -1,11 +1,11 @@
 import { auth } from "@/lib/auth";
-
 import { signIn } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { GoogleSignIn } from "@/components/google-sign-in";
+import { executeAction } from "@/lib/executeAction";
 
 const Page = async () => {
   const session = await auth();
@@ -30,6 +30,14 @@ const Page = async () => {
       {/* Email/Password Sign In */}
       <form
         className="space-y-4"
+        action={async (formData: FormData) => {
+          "use server"
+          await executeAction({
+            actionFn: async () => {
+              await signIn("credentials", formData);
+            }
+          })
+        }}
       >
         <Input
           name="email"

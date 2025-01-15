@@ -25,12 +25,12 @@ export default function Home() {
                         Turn your goals from a dream to a necessity - we boost your productivity allowing you to focus on accomplishing
                     </p>
                     <div className="flex lg:flex-row flex-col gap-2 items-center">
-                        <div className='bg-primary w-fit p-5 rounded-lg text-white cursor-pointer hover:bg-blue-700'>
+                        <Link href={"/sign-up"} className='bg-primary w-fit p-5 rounded-lg text-white cursor-pointer hover:bg-blue-700'>
                             Unlock my Potential
-                        </div>
-                        <div className='text-black cursor-pointer justify-center items-center p-5'>
+                        </Link>
+                        <Link href={"/sign-in"} className='text-black cursor-pointer justify-center items-center p-5'>
                             I already have an account
-                        </div>
+                        </Link>
                     </div>
                     <div className="flex flex-col items-center lg:flex-row gap-2 py-3">
                         <StackedImages />
@@ -177,9 +177,9 @@ export default function Home() {
                         You&apos;ll be excited to work, build consistency and discpline with the upkeep of your village(s). 
                         No motivation / forcing yourself to work when your playing a game!
                     </p>
-                    <div className='bg-primary w-fit p-5 rounded-lg text-white cursor-pointer hover:bg-blue-700'>
+                    <Link href={"/sign-up"} className='bg-primary w-fit p-5 rounded-lg text-white cursor-pointer hover:bg-blue-700'>
                         Unlock my Potential
-                    </div>
+                    </Link>
                 </div>
             </div>
             <div className="w-full flex flex-col lg:flex-row px-0 lg:px-32 gap-10 pt-32">
@@ -190,9 +190,9 @@ export default function Home() {
                         See how far you have progressed from your starting point - keep up with your streaks and see the growth 
                         you (and your village) had from the weeks, months or years since you&apos;ve started your goal.
                     </p>
-                    <div className='bg-primary w-fit p-5 rounded-lg text-white cursor-pointer hover:bg-blue-700'>
+                    <Link href={"/sign-up"} className='bg-primary w-fit p-5 rounded-lg text-white cursor-pointer hover:bg-blue-700'>
                         Achieve my Goals
-                    </div>
+                    </Link>
                 </div>
                 <div className="w-full lg:w-[40%] bg-red-300">
                     <p>123</p>
@@ -209,9 +209,9 @@ export default function Home() {
                         Rise on the leaderboards, show off your streaks and progress to your friends, family or online. 
                         Compete against other players on a leaderboard and maxmise your village(s) to the max.
                     </p>
-                    <div className='bg-primary w-fit p-5 rounded-lg text-white cursor-pointer hover:bg-blue-700'>
+                    <Link href={"/sign-up"} className='bg-primary w-fit p-5 rounded-lg text-white cursor-pointer hover:bg-blue-700'>
                         Unlock my Potential
-                    </div>
+                    </Link>
                 </div>
             </div>
         </div>
@@ -230,9 +230,9 @@ export default function Home() {
             <div className="flex flex-col lg:flex-row w-full pt-16">
                 <div className="w-full lg:w-1/2 bg-slate-50 flex flex-col items-center shadow-lg rounded-[20px] py-8 px-14">
                     <p className="text-4xl text-black pb-5">$4 <span className="text-lg text-slate-500">/month</span></p>
-                    <div className='bg-primary p-3 w-full rounded-lg text-white cursor-pointer hover:bg-blue-700'>
+                    <Link href={"/sign-up"} className='bg-primary p-3 w-full rounded-lg text-white cursor-pointer hover:bg-blue-700'>
                         <p className="text-center">UNLOCK MY POTENTIAL</p>
-                    </div>
+                    </Link>
                     <div className="pt-10 flex flex-col gap-4">
                         <div className="flex flex-row gap-3 items-center">
                             <FaCheck className="text-xl text-slate-500"/>
@@ -269,9 +269,9 @@ export default function Home() {
 
                 <div className="w-full lg:w-1/2 bg-slate-50 flex flex-col items-center shadow-lg rounded-[20px] py-8 px-14">
                     <p className="text-4xl text-black pb-5">$48 <span className="text-lg text-slate-500">/ lifetime deal</span></p>
-                    <div className='bg-primary p-3 w-full rounded-lg text-white cursor-pointer hover:bg-blue-700'>
+                    <Link href={"/sign-up"} className='bg-primary p-3 w-full rounded-lg text-white cursor-pointer hover:bg-blue-700'>
                         <p className="text-center">UNLOCK MY POTENTIAL</p>
-                    </div>
+                    </Link>
                     <div className="pt-10 flex flex-col gap-4">
                         <div className="flex flex-row gap-3 items-center">
                             <FaCheck className="text-xl text-slate-500"/>
